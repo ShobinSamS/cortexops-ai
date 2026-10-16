@@ -1,0 +1,494 @@
+[
+  {
+    "ecosystem": "python",
+    "name": "fastapi",
+    "latest_version": "0.143.3",
+    "license": "MIT",
+    "requires": ">=3.10",
+    "source": "https://pypi.org/pypi/fastapi/json"
+  },
+  {
+    "ecosystem": "python",
+    "name": "uvicorn",
+    "latest_version": "0.54.0",
+    "license": "BSD-3-Clause",
+    "requires": ">=3.10",
+    "source": "https://pypi.org/pypi/uvicorn/json"
+  },
+  {
+    "ecosystem": "python",
+    "name": "pydantic",
+    "latest_version": "2.14.1",
+    "license": "MIT",
+    "requires": ">=3.10",
+    "source": "https://pypi.org/pypi/pydantic/json"
+  },
+  {
+    "ecosystem": "python",
+    "name": "pydantic-settings",
+    "latest_version": "2.16.0",
+    "license": "MIT",
+    "requires": ">=3.11",
+    "source": "https://pypi.org/pypi/pydantic-settings/json"
+  },
+  {
+    "ecosystem": "python",
+    "name": "sqlalchemy",
+    "latest_version": "2.1.4",
+    "license": "MIT",
+    "requires": ">=3.11",
+    "source": "https://pypi.org/pypi/sqlalchemy/json"
+  },
+  {
+    "ecosystem": "python",
+    "name": "alembic",
+    "latest_version": "1.20.0",
+    "license": "MIT",
+    "requires": ">=3.10",
+    "source": "https://pypi.org/pypi/alembic/json"
+  },
+  {
+    "ecosystem": "python",
+    "name": "psycopg",
+    "latest_version": "3.3.6",
+    "license": "LGPL-3.0-only",
+    "requires": ">=3.10",
+    "source": "https://pypi.org/pypi/psycopg/json"
+  },
+  {
+    "ecosystem": "python",
+    "name": "redis",
+    "latest_version": "8.1.0",
+    "license": "MIT",
+    "requires": ">=3.10",
+    "source": "https://pypi.org/pypi/redis/json"
+  },
+  {
+    "ecosystem": "python",
+    "name": "celery",
+    "latest_version": "5.6.3",
+    "license": "BSD-3-Clause",
+    "requires": ">=3.9",
+    "source": "https://pypi.org/pypi/celery/json"
+  },
+  {
+    "ecosystem": "python",
+    "name": "langgraph",
+    "latest_version": "1.2.15",
+    "license": "MIT",
+    "requires": ">=3.10",
+    "source": "https://pypi.org/pypi/langgraph/json"
+  },
+  {
+    "ecosystem": "python",
+    "name": "langgraph-checkpoint-postgres",
+    "latest_version": "3.2.0",
+    "license": "MIT",
+    "requires": ">=3.10",
+    "source": "https://pypi.org/pypi/langgraph-checkpoint-postgres/json"
+  },
+  {
+    "ecosystem": "python",
+    "name": "langchain",
+    "latest_version": "1.4.6",
+    "license": "MIT",
+    "requires": "<4.0.0,>=3.10.0",
+    "source": "https://pypi.org/pypi/langchain/json"
+  },
+  {
+    "ecosystem": "python",
+    "name": "langchain-ollama",
+    "latest_version": "1.1.0",
+    "license": "MIT",
+    "requires": "<4.0.0,>=3.10.0",
+    "source": "https://pypi.org/pypi/langchain-ollama/json"
+  },
+  {
+    "ecosystem": "python",
+    "name": "mcp",
+    "latest_version": "2.3.0",
+    "license": "MIT",
+    "requires": ">=3.10",
+    "source": "https://pypi.org/pypi/mcp/json"
+  },
+  {
+    "ecosystem": "python",
+    "name": "sentence-transformers",
+    "latest_version": "6.1.0",
+    "license": "Apache-2.0",
+    "requires": ">=3.10",
+    "source": "https://pypi.org/pypi/sentence-transformers/json"
+  },
+  {
+    "ecosystem": "python",
+    "name": "torch",
+    "latest_version": "2.14.1",
+    "license": "Apache-2.0 AND Apache-2.0 WITH LLVM-exception AND BSD-2-Clause AND BSD-3-Clause AND BSL-1.0 AND MIT",
+    "requires": ">=3.10",
+    "source": "https://pypi.org/pypi/torch/json"
+  },
+  {
+    "ecosystem": "python",
+    "name": "qdrant-client",
+    "latest_version": "1.19.1",
+    "license": "Apache-2.0",
+    "requires": ">=3.10",
+    "source": "https://pypi.org/pypi/qdrant-client/json"
+  },
+  {
+    "ecosystem": "python",
+    "name": "fastembed",
+    "latest_version": "0.9.0",
+    "license": "Apache-2.0",
+    "requires": ">=3.10.0",
+    "source": "https://pypi.org/pypi/fastembed/json"
+  },
+  {
+    "ecosystem": "python",
+    "name": "neo4j",
+    "latest_version": "6.4.1",
+    "license": "Apache-2.0 AND Python-2.0",
+    "requires": ">=3.10",
+    "source": "https://pypi.org/pypi/neo4j/json"
+  },
+  {
+    "ecosystem": "python",
+    "name": "pypdf",
+    "latest_version": "6.21.0",
+    "license": "BSD-3-Clause",
+    "requires": ">=3.9",
+    "source": "https://pypi.org/pypi/pypdf/json"
+  },
+  {
+    "ecosystem": "python",
+    "name": "python-docx",
+    "latest_version": "1.2.0",
+    "license": "MIT",
+    "requires": ">=3.9",
+    "source": "https://pypi.org/pypi/python-docx/json"
+  },
+  {
+    "ecosystem": "python",
+    "name": "reportlab",
+    "latest_version": "5.0.1",
+    "license": "BSD license (see license.txt for details), Copyright (c) 2000-2025, ReportLab Inc.",
+    "requires": "<4,>=3.9",
+    "source": "https://pypi.org/pypi/reportlab/json"
+  },
+  {
+    "ecosystem": "python",
+    "name": "python-multipart",
+    "latest_version": "0.0.32",
+    "license": "Apache-2.0",
+    "requires": ">=3.10",
+    "source": "https://pypi.org/pypi/python-multipart/json"
+  },
+  {
+    "ecosystem": "python",
+    "name": "pyjwt",
+    "latest_version": "2.15.1",
+    "license": "MIT",
+    "requires": ">=3.9",
+    "source": "https://pypi.org/pypi/pyjwt/json"
+  },
+  {
+    "ecosystem": "python",
+    "name": "pwdlib",
+    "latest_version": "0.3.1",
+    "license": [
+      "License :: OSI Approved :: MIT License"
+    ],
+    "requires": ">=3.10",
+    "source": "https://pypi.org/pypi/pwdlib/json"
+  },
+  {
+    "ecosystem": "python",
+    "name": "httpx",
+    "latest_version": "0.28.1",
+    "license": "BSD-3-Clause",
+    "requires": ">=3.8",
+    "source": "https://pypi.org/pypi/httpx/json"
+  },
+  {
+    "ecosystem": "python",
+    "name": "structlog",
+    "latest_version": "26.1.0",
+    "license": "MIT OR Apache-2.0",
+    "requires": ">=3.10",
+    "source": "https://pypi.org/pypi/structlog/json"
+  },
+  {
+    "ecosystem": "python",
+    "name": "slowapi",
+    "latest_version": "0.1.10",
+    "license": "MIT",
+    "requires": "<4.0,>=3.7",
+    "source": "https://pypi.org/pypi/slowapi/json"
+  },
+  {
+    "ecosystem": "python",
+    "name": "opentelemetry-sdk",
+    "latest_version": "1.45.1",
+    "license": "Apache-2.0",
+    "requires": ">=3.10",
+    "source": "https://pypi.org/pypi/opentelemetry-sdk/json"
+  },
+  {
+    "ecosystem": "python",
+    "name": "opentelemetry-exporter-otlp-proto-http",
+    "latest_version": "1.45.1",
+    "license": "Apache-2.0",
+    "requires": ">=3.10",
+    "source": "https://pypi.org/pypi/opentelemetry-exporter-otlp-proto-http/json"
+  },
+  {
+    "ecosystem": "python",
+    "name": "opentelemetry-instrumentation-fastapi",
+    "latest_version": "0.66b1",
+    "license": "Apache-2.0",
+    "requires": ">=3.10",
+    "source": "https://pypi.org/pypi/opentelemetry-instrumentation-fastapi/json"
+  },
+  {
+    "ecosystem": "python",
+    "name": "prometheus-client",
+    "latest_version": "0.26.0",
+    "license": "Apache-2.0 AND BSD-2-Clause",
+    "requires": ">=3.9",
+    "source": "https://pypi.org/pypi/prometheus-client/json"
+  },
+  {
+    "ecosystem": "python",
+    "name": "pytest",
+    "latest_version": "9.1.1",
+    "license": "MIT",
+    "requires": ">=3.10",
+    "source": "https://pypi.org/pypi/pytest/json"
+  },
+  {
+    "ecosystem": "python",
+    "name": "pytest-asyncio",
+    "latest_version": "1.4.0",
+    "license": "Apache-2.0",
+    "requires": ">=3.10",
+    "source": "https://pypi.org/pypi/pytest-asyncio/json"
+  },
+  {
+    "ecosystem": "python",
+    "name": "pytest-cov",
+    "latest_version": "7.1.0",
+    "license": "MIT",
+    "requires": ">=3.9",
+    "source": "https://pypi.org/pypi/pytest-cov/json"
+  },
+  {
+    "ecosystem": "python",
+    "name": "ruff",
+    "latest_version": "0.17.1",
+    "license": "MIT",
+    "requires": ">=3.7",
+    "source": "https://pypi.org/pypi/ruff/json"
+  },
+  {
+    "ecosystem": "python",
+    "name": "pip",
+    "latest_version": "26.2.1",
+    "license": "MIT",
+    "requires": ">=3.10",
+    "source": "https://pypi.org/pypi/pip/json"
+  },
+  {
+    "ecosystem": "python",
+    "name": "pip-licenses",
+    "latest_version": "5.5.5",
+    "license": "MIT",
+    "requires": ">=3.9",
+    "source": "https://pypi.org/pypi/pip-licenses/json"
+  },
+  {
+    "ecosystem": "npm",
+    "name": "react",
+    "latest_version": "19.3.1",
+    "license": "MIT",
+    "requires": {
+      "node": ">=0.10.0"
+    },
+    "source": "https://registry.npmjs.org/react/latest"
+  },
+  {
+    "ecosystem": "npm",
+    "name": "react-dom",
+    "latest_version": "19.3.1",
+    "license": "MIT",
+    "requires": null,
+    "source": "https://registry.npmjs.org/react-dom/latest"
+  },
+  {
+    "ecosystem": "npm",
+    "name": "react-router-dom",
+    "latest_version": "7.18.4",
+    "license": "MIT",
+    "requires": {
+      "node": ">=20.0.0"
+    },
+    "source": "https://registry.npmjs.org/react-router-dom/latest"
+  },
+  {
+    "ecosystem": "npm",
+    "name": "@tanstack/react-query",
+    "latest_version": "5.104.3",
+    "license": "MIT",
+    "requires": null,
+    "source": "https://registry.npmjs.org/@tanstack/react-query/latest"
+  },
+  {
+    "ecosystem": "npm",
+    "name": "zustand",
+    "latest_version": "5.0.15",
+    "license": "MIT",
+    "requires": {
+      "node": ">=12.20.0"
+    },
+    "source": "https://registry.npmjs.org/zustand/latest"
+  },
+  {
+    "ecosystem": "npm",
+    "name": "@xyflow/react",
+    "latest_version": "12.12.0",
+    "license": "MIT",
+    "requires": null,
+    "source": "https://registry.npmjs.org/@xyflow/react/latest"
+  },
+  {
+    "ecosystem": "npm",
+    "name": "recharts",
+    "latest_version": "3.10.1",
+    "license": "MIT",
+    "requires": {
+      "node": ">=18"
+    },
+    "source": "https://registry.npmjs.org/recharts/latest"
+  },
+  {
+    "ecosystem": "npm",
+    "name": "lucide-react",
+    "latest_version": "1.58.0",
+    "license": "ISC",
+    "requires": null,
+    "source": "https://registry.npmjs.org/lucide-react/latest"
+  },
+  {
+    "ecosystem": "npm",
+    "name": "@radix-ui/react-slot",
+    "latest_version": "1.5.0",
+    "license": "MIT",
+    "requires": null,
+    "source": "https://registry.npmjs.org/@radix-ui/react-slot/latest"
+  },
+  {
+    "ecosystem": "npm",
+    "name": "class-variance-authority",
+    "latest_version": "0.7.1",
+    "license": "Apache-2.0",
+    "requires": null,
+    "source": "https://registry.npmjs.org/class-variance-authority/latest"
+  },
+  {
+    "ecosystem": "npm",
+    "name": "clsx",
+    "latest_version": "2.1.1",
+    "license": "MIT",
+    "requires": {
+      "node": ">=6"
+    },
+    "source": "https://registry.npmjs.org/clsx/latest"
+  },
+  {
+    "ecosystem": "npm",
+    "name": "tailwind-merge",
+    "latest_version": "3.7.0",
+    "license": "MIT",
+    "requires": null,
+    "source": "https://registry.npmjs.org/tailwind-merge/latest"
+  },
+  {
+    "ecosystem": "npm",
+    "name": "vite",
+    "latest_version": "8.3.4",
+    "license": "MIT",
+    "requires": {
+      "node": "^20.19.0 || >=22.12.0"
+    },
+    "source": "https://registry.npmjs.org/vite/latest"
+  },
+  {
+    "ecosystem": "npm",
+    "name": "typescript",
+    "latest_version": "7.0.2",
+    "license": "Apache-2.0",
+    "requires": {
+      "node": ">=16.20.0"
+    },
+    "source": "https://registry.npmjs.org/typescript/latest"
+  },
+  {
+    "ecosystem": "npm",
+    "name": "@vitejs/plugin-react",
+    "latest_version": "6.1.2",
+    "license": "MIT",
+    "requires": {
+      "node": "^20.19.0 || >=22.12.0"
+    },
+    "source": "https://registry.npmjs.org/@vitejs/plugin-react/latest"
+  },
+  {
+    "ecosystem": "npm",
+    "name": "@types/react",
+    "latest_version": "19.3.0",
+    "license": "MIT",
+    "requires": null,
+    "source": "https://registry.npmjs.org/@types/react/latest"
+  },
+  {
+    "ecosystem": "npm",
+    "name": "@types/react-dom",
+    "latest_version": "19.3.0",
+    "license": "MIT",
+    "requires": null,
+    "source": "https://registry.npmjs.org/@types/react-dom/latest"
+  },
+  {
+    "ecosystem": "npm",
+    "name": "@types/node",
+    "latest_version": "26.6.5",
+    "license": "MIT",
+    "requires": null,
+    "source": "https://registry.npmjs.org/@types/node/latest"
+  },
+  {
+    "ecosystem": "npm",
+    "name": "tailwindcss",
+    "latest_version": "4.3.3",
+    "license": "MIT",
+    "requires": null,
+    "source": "https://registry.npmjs.org/tailwindcss/latest"
+  },
+  {
+    "ecosystem": "npm",
+    "name": "@tailwindcss/vite",
+    "latest_version": "4.3.3",
+    "license": "MIT",
+    "requires": null,
+    "source": "https://registry.npmjs.org/@tailwindcss/vite/latest"
+  },
+  {
+    "ecosystem": "npm",
+    "name": "@playwright/test",
+    "latest_version": "1.64.1",
+    "license": "Apache-2.0",
+    "requires": {
+      "node": ">=20"
+    },
+    "source": "https://registry.npmjs.org/@playwright/test/latest"
+  }
+]

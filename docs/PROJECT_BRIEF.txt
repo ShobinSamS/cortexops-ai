@@ -1,0 +1,429 @@
+Act as a Principal AI Architect, Senior Full-Stack Engineer, and AI/ML Engineer.
+Build a complete, production-oriented, open-source enterprise multi-agent intelligence platform called CortexOps AI.
+This must be a real, executable application, not a prototype, chatbot wrapper, to-do application, or collection of disconnected demos.
+Implement the application incrementally, with functional frontend/backend integration, automated tests, realistic synthetic datasets, documentation, and Docker-based deployment.
+Do not stop after generating architecture diagrams or boilerplate. Continue implementing, testing, and fixing each module.
+CortexOps AI is an autonomous enterprise investigation and decision-support platform.
+Users can ask complex operational questions such as:
+"Why did our document verification model accuracy decrease from 98% to 91% after the latest deployment?"
+The system should:
+1. Understand the investigation request.
+2. Generate a structured investigation plan.
+3. Retrieve relevant enterprise documentation using RAG.
+4. Access operational data through MCP tools.
+5. Analyze GitHub commits and deployment history.
+6. Compare production model metrics.
+7. Investigate possible root causes.
+8. Validate hypotheses against available evidence.
+9. Generate an evidence-backed investigation report.
+10. Recommend corrective actions.
+11. Request user approval before making external changes.
+The system must clearly distinguish verified findings, hypotheses, and recommendations.
+- React with TypeScript and Vite
+- Tailwind CSS
+- shadcn/ui
+- React Router
+- TanStack Query
+- Zustand
+- React Flow
+- Recharts
+- WebSocket-based live execution monitoring
+- Python 3.12+
+- FastAPI
+- Pydantic v2
+- SQLAlchemy 2.x
+- Alembic
+- PostgreSQL
+- Redis
+- Celery
+- WebSockets
+- JWT authentication with refresh-token rotation
+- Role-based access control
+- LangGraph
+- LangChain where useful
+- Ollama for local LLM inference
+- Configurable open-weight model, initially Qwen3
+- Sentence Transformers for embeddings
+- Structured outputs validated using Pydantic
+- Persistent agent state and checkpointing
+- Human-in-the-loop approvals
+- Qdrant vector database
+- Dense and sparse retrieval
+- Hybrid search
+- Cross-encoder reranking
+- Document chunking and metadata filtering
+- Source citations
+- Retrieval evaluation
+- Neo4j Community Edition
+- Entities and relationships extracted from documents
+- Service-to-deployment relationships
+- Incident-to-component relationships
+- Graph-enhanced retrieval
+Use the official Model Context Protocol Python SDK.
+Build custom MCP servers for:
+- GitHub integration
+- PostgreSQL analytics
+- Knowledge retrieval
+- Application monitoring
+- Incident management
+- Docker Compose
+- Nginx
+- OpenTelemetry
+- Prometheus
+- Grafana
+- Pytest
+- Playwright
+- GitHub Actions CI
+Use open-source libraries and self-hosted infrastructure. Do not require paid APIs, SaaS subscriptions, or proprietary AI services.
+Verify compatibility and licenses before selecting dependency versions.
+Build a modern, responsive enterprise SaaS interface.
+Use a polished dark theme, professional typography, accessible components, responsive layouts, and consistent design tokens.
+Create the following pages:
+Display:
+- Total investigations
+- Active investigations
+- Completed investigations
+- Failed investigations
+- Average investigation duration
+- Agent execution statistics
+- Model performance trends
+- Recent incidents
+- Tool usage statistics
+Allow users to:
+- Submit natural-language investigation requests.
+- Select connected data sources.
+- Start, pause, resume, and cancel investigations.
+- View the investigation plan.
+- Monitor individual agents.
+- Inspect tool calls and results.
+- View intermediate findings.
+- Review final reports.
+Stream real execution events from FastAPI using WebSockets.
+Use React Flow to visualize:
+- Supervisor agent
+- Planner agent
+- Retrieval agent
+- Data analysis agent
+- Code investigation agent
+- Diagnosis agent
+- Reporting agent
+Show agent states such as pending, running, completed, failed, and waiting for approval.
+The visualization must reflect real backend execution events.
+Implement:
+- PDF, TXT, Markdown, and DOCX uploads
+- Document processing status
+- Knowledge-base management
+- Chunk inspection
+- Search testing
+- Source citation previews
+- Document deletion and reindexing
+Display:
+- Registered MCP servers
+- Available tools
+- Connection status
+- Tool descriptions
+- Permission requirements
+- Execution history
+- Connection health
+Visualize entities and relationships using an interactive graph.
+Allow users to inspect connections between incidents, documents, repositories, deployments, services, and models.
+Provide:
+- Investigation history
+- Evidence-backed findings
+- Root-cause hypotheses
+- Confidence and uncertainty indicators
+- Recommended actions
+- PDF/Markdown report export
+- Agent performance metrics
+Implement:
+- User management
+- Role-based permissions
+- Workspace configuration
+- LLM configuration
+- MCP tool permissions
+- Audit logs
+Use a modular architecture with clear boundaries between API routes, domain services, persistence, AI orchestration, and infrastructure adapters.
+Implement:
+- Authentication and authorization
+- User and workspace management
+- Investigation lifecycle management
+- Agent execution orchestration
+- Knowledge ingestion
+- RAG retrieval
+- MCP server management
+- Tool execution and approvals
+- Report generation
+- Audit logging
+- Metrics collection
+- Background processing
+Use async FastAPI endpoints where appropriate.
+Use Celery for long-running document ingestion and background tasks.
+Do not run expensive model inference or document processing directly inside request handlers.
+Use database transactions, typed schemas, dependency injection, structured logging, and consistent error handling.
+Implement the agents using LangGraph.
+Coordinates execution, routes work, tracks progress, handles failures, and determines completion.
+Converts a user request into a structured investigation plan with testable hypotheses.
+Searches the knowledge base and returns relevant evidence with citations.
+Queries approved database views, compares metrics, and identifies statistical changes.
+Examines GitHub commits, changed files, pull requests, and deployment versions.
+Combines evidence, evaluates competing hypotheses, identifies likely causes, and records uncertainty.
+Creates a structured final report with findings, evidence, recommendations, and limitations.
+Implement:
+- Explicit agent state schemas
+- Typed inputs and outputs
+- Conditional graph edges
+- Retry policies
+- Timeouts
+- Execution budgets
+- Persistent checkpoints
+- Tool-call tracing
+- Human approval interrupts
+- Failure recovery
+- Cancellation handling
+Agents must not invent tool results, source citations, metrics, or completed actions.
+Avoid unnecessary agent-to-agent conversations. Use deterministic Python functions for calculations, validation, and data transformations.
+Implement the complete ingestion and retrieval workflow:
+Document Upload → Parsing → Cleaning → Chunking → Metadata Extraction → Embedding → Qdrant Indexing
+For retrieval:
+User Query → Query Analysis → Dense/Sparse Retrieval → Hybrid Fusion → Reranking → Evidence Selection → Grounded Answer
+Requirements:
+- Configurable chunk sizes and overlap
+- Stable document and chunk identifiers
+- Duplicate detection
+- Metadata-based filtering
+- Workspace isolation
+- Source provenance
+- Page and section references
+- Incremental indexing
+- Document deletion
+- Retrieval evaluation
+Add safeguards against prompt injection in retrieved documents.
+Treat retrieved text as untrusted evidence, never as instructions that can override application policies.
+Create actual MCP servers using the official Python SDK.
+Implement tools including:
+- list_repositories
+- get_recent_commits
+- compare_commits
+- get_pull_requests
+- get_changed_files
+- create_issue
+- get_model_metrics
+- compare_model_versions
+- get_failure_distribution
+- get_deployment_statistics
+- search_knowledge
+- get_document
+- retrieve_evidence
+- get_application_logs
+- get_error_statistics
+- get_service_health
+- get_deployment_events
+Each MCP tool must have:
+- Input validation
+- Typed response schema
+- Error handling
+- Timeouts
+- Access controls
+- Audit logging
+Enforce read-only database access using database-level permissions and approved queries.
+Never allow unrestricted SQL execution or arbitrary shell commands.
+Write operations must require explicit human approval.
+Implement this complete scenario:
+A user submits:
+"Investigate why document verification accuracy dropped from 98% to 91% after deployment v2.3."
+Expected workflow:
+1. Planner generates an investigation plan.
+2. Data Analyst retrieves model performance metrics.
+3. Retrieval Agent searches deployment and model documentation.
+4. Code Investigation Agent checks recent code changes.
+5. Monitoring Agent tools retrieve relevant logs.
+6. Diagnosis Agent compares possible causes.
+7. System identifies supporting and contradictory evidence.
+8. Reporting Agent generates a report.
+9. User reviews recommendations.
+10. User may approve creation of a GitHub issue.
+The demo dataset should contain a reproducible incident with a known cause.
+Use synthetic data only.
+The system must not simply hardcode the expected answer. It should discover the cause through retrieval, tool execution, and evidence analysis.
+Create normalized PostgreSQL tables for:
+- users
+- workspaces
+- workspace_members
+- investigations
+- investigation_steps
+- agent_executions
+- tool_executions
+- approvals
+- documents
+- document_chunks
+- data_sources
+- mcp_servers
+- reports
+- audit_logs
+- model_configurations
+Use Alembic migrations.
+Define foreign keys, indexes, uniqueness constraints, and lifecycle states.
+Persist investigation execution metadata separately from LangGraph checkpoint state.
+Implement:
+- Secure password hashing
+- JWT access tokens
+- Refresh-token rotation and revocation
+- Role-based authorization
+- Workspace isolation
+- Server-side permission checks
+- Input validation
+- File upload validation
+- File size restrictions
+- Secrets through environment variables
+- Rate limiting
+- Audit logging
+- MCP tool permission enforcement
+- Prompt injection defenses
+- Human approval for write operations
+Do not store secrets in source code.
+Do not expose database credentials or internal service tokens to the frontend.
+Treat LLM-generated actions as untrusted until validated by application code.
+Track:
+- Investigation success rate
+- Agent execution latency
+- LLM inference latency
+- Token usage
+- Tool-call success and failure
+- Retrieval Recall@K
+- Citation correctness
+- Root-cause identification accuracy
+- Unsupported-claim rate
+- Investigation completion time
+- Resource consumption
+Use OpenTelemetry for tracing and Prometheus/Grafana for operational monitoring.
+Build evaluation datasets containing successful investigations, ambiguous cases, irrelevant documents, failed tools, and insufficient evidence.
+Use a monorepo:
+```text
+cortexops-ai/
+├── frontend/
+│   ├── src/
+│   ├── components/
+│   ├── pages/
+│   ├── hooks/
+│   ├── services/
+│   └── tests/
+├── backend/
+│   ├── app/
+│   │   ├── api/
+│   │   ├── core/
+│   │   ├── models/
+│   │   ├── schemas/
+│   │   ├── services/
+│   │   ├── agents/
+│   │   ├── rag/
+│   │   ├── mcp/
+│   │   ├── graph/
+│   │   └── workers/
+│   ├── alembic/
+│   └── tests/
+├── mcp-servers/
+│   ├── github/
+│   ├── database/
+│   ├── knowledge/
+│   └── monitoring/
+├── evaluation/
+├── demo-data/
+├── infrastructure/
+├── docs/
+├── docker-compose.yml
+├── .env.example
+└── README.md
+
+```
+Adjust the structure where necessary to preserve clean Python packaging and avoid duplicate ownership of MCP implementation code.
+Build the application in phases.
+- Monorepo setup
+- React application
+- FastAPI backend
+- PostgreSQL integration
+- Authentication
+- Docker Compose
+- Basic dashboard
+- Document upload
+- Parsing
+- Chunking
+- Embeddings
+- Qdrant
+- Hybrid retrieval
+- Reranking
+- Citations
+- MCP server implementations
+- Tool discovery
+- Tool invocation
+- Permission checks
+- Audit logs
+- LangGraph state machine
+- Supervisor
+- Planner
+- Specialized agents
+- Checkpointing
+- Approval workflow
+- Investigation reasoning
+- Knowledge graph
+- Evidence verification
+- Root-cause analysis
+- Report generation
+- Observability
+- Evaluation
+- Unit and integration tests
+- End-to-end tests
+- Security improvements
+- Performance optimization
+- Documentation
+Complete and test each phase before proceeding.
+The project is complete only when:
+1. The application starts using documented commands.
+2. React communicates with FastAPI.
+3. Users can authenticate and create investigations.
+4. Documents can be uploaded and indexed.
+5. RAG returns evidence with valid source references.
+6. MCP servers expose functioning tools.
+7. LangGraph executes a multi-step investigation.
+8. The frontend displays actual execution progress.
+9. The system handles tool failures and resumes interrupted workflows.
+10. Write operations require approval.
+11. Reports are generated from recorded evidence.
+12. Investigation history persists across restarts.
+13. Automated tests pass.
+14. The complete synthetic incident can be investigated end to end.
+15. The README contains setup instructions, architecture, screenshots, API documentation, and troubleshooting guidance.
+Do not use mocked responses in the final integration workflow.
+Mocks are acceptable in isolated automated tests.
+- Write complete executable code.
+- Use clear interfaces and type annotations.
+- Prefer maintainable architecture over unnecessary abstractions.
+- Do not generate placeholder functions and call them implemented.
+- Do not hardcode investigation results.
+- Do not fabricate successful tests.
+- Run tests and fix failures whenever execution tools are available.
+- Keep frontend and backend API contracts synchronized.
+- Use environment-based configuration.
+- Provide reproducible setup commands.
+- Document architectural decisions.
+- Preserve working functionality while adding features.
+- Avoid unnecessary paid dependencies.
+If local hardware cannot run every service simultaneously, provide a lightweight development profile and a full deployment profile.
+Use a smaller local model for development while keeping model selection configurable.
+First, produce:
+1. Final system architecture.
+2. Component responsibilities and data flows.
+3. Database entity relationships.
+4. API endpoint specifications.
+5. LangGraph agent workflow.
+6. MCP server contracts.
+7. Detailed implementation milestones.
+Then immediately implement Phase 1.
+Create actual project files, configuration, migrations, frontend pages, backend endpoints, Docker setup, and tests.
+After Phase 1, explain:
+- What was implemented
+- Which files were created
+- How to run the application
+- Which tests passed
+- What remains for Phase 2
+Continue through the remaining phases, preserving a working application after every milestone.
+Final objective: Deliver a functional, demonstrable, enterprise-grade multi-agent AI investigation platform suitable for showcasing advanced React, FastAPI, RAG, MCP, LangGraph, and open-source AI engineering skills.

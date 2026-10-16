@@ -1,0 +1,129 @@
+name: cortexops-prerequisites
+include:
+  - compose.prerequisites.yml
+
+x-app: &app
+  image: cortexops-ai-backend:local
+  env_file: .env
+  environment: &environment
+    API_HOST: 0.0.0.0
+    CORTEXOPS_ROOT: /app
+    POSTGRES_HOST: postgres
+    REDIS_URL: redis://redis:6379/0
+    QDRANT_URL: http://qdrant:6333
+    OLLAMA_BASE_URL: http://host.docker.internal:11434
+    EMBEDDING_MODEL: /models/embedding
+    RERANKER_MODEL: /models/reranker
+    UPLOAD_DIR: /data/uploads
+    MCP_CONTAINER_NETWORK: 'true'
+    MCP_BIND_HOST: 0.0.0.0
+    NEO4J_URI: ${CONTAINER_NEO4J_URI:-}
+    OTEL_EXPORTER_OTLP_ENDPOINT: ${CONTAINER_OTEL_ENDPOINT:-}
+  extra_hosts: ['host.docker.internal:host-gateway']
+  volumes: ['uploads:/data/uploads', './.cache/models:/models:ro', './demo-data:/app/demo-data:ro']
+  restart: unless-stopped
+  security_opt: ['no-new-privileges:true']
+
+services:
+  init:
+    <<: *app
+    build: ./backend
+    restart: 'no'
+    command: ['sh', '-ec', '.venv/bin/alembic upgrade head; .venv/bin/python -m app.cli setup-analytics --no-write-env; .venv/bin/python -m app.cli sync-endpoints']
+    depends_on:
+      postgres: {condition: service_healthy}
+      redis: {condition: service_healthy}
+    mem_limit: 512m
+  api:
+    <<: *app
+    command: ['.venv/bin/python', '-m', 'app']
+    ports: ['127.0.0.1:8000:8000']
+    depends_on:
+      init: {condition: service_completed_successfully}
+      qdrant: {condition: service_started}
+    mem_limit: 768m
+    healthcheck:
+      test: ['CMD', '/app/.venv/bin/python', '-c', "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health/ready', timeout=5)"]
+      interval: 10s
+      timeout: 7s
+      retries: 15
+  frontend:
+    build: ./frontend
+    ports: ['127.0.0.1:8080:80']
+    depends_on:
+      api: {condition: service_healthy}
+    mem_limit: 128m
+    restart: unless-stopped
+  worker:
+    <<: *app
+    command: ['.venv/bin/celery', '-A', 'app.workers.celery_app:celery', 'worker', '--loglevel=info', '--concurrency=1', '--pool=solo', '--hostname=documents@%h']
+    depends_on:
+      api: {condition: service_healthy}
+    mem_limit: 2g
+  investigation-worker:
+    <<: *app
+    command: ['.venv/bin/celery', '-A', 'app.workers.celery_app:celery', 'worker', '--loglevel=info', '--concurrency=1', '--pool=solo', '-Q', 'cortexops.investigations', '--hostname=investigations@%h']
+    depends_on:
+      api: {condition: service_healthy}
+    mem_limit: 768m
+  mcp-github:
+    <<: *app
+    command: ['.venv/bin/python', '-m', 'app.mcp.server', '--kind', 'github']
+    depends_on:
+      api: {condition: service_healthy}
+    mem_limit: 384m
+  mcp-analytics:
+    <<: *app
+    command: ['.venv/bin/python', '-m', 'app.mcp.server', '--kind', 'analytics']
+    depends_on:
+      api: {condition: service_healthy}
+    mem_limit: 384m
+  mcp-knowledge:
+    <<: *app
+    command: ['.venv/bin/python', '-m', 'app.mcp.server', '--kind', 'knowledge']
+    depends_on:
+      api: {condition: service_healthy}
+    mem_limit: 384m
+  mcp-monitoring:
+    <<: *app
+    command: ['.venv/bin/python', '-m', 'app.mcp.server', '--kind', 'monitoring']
+    depends_on:
+      api: {condition: service_healthy}
+    mem_limit: 384m
+  mcp-incidents:
+    <<: *app
+    command: ['.venv/bin/python', '-m', 'app.mcp.server', '--kind', 'incidents']
+    depends_on:
+      api: {condition: service_healthy}
+    mem_limit: 384m
+  prometheus:
+    image: prom/prometheus:v3.5.0
+    profiles: ['observability']
+    ports: ['127.0.0.1:9090:9090']
+    volumes: ['./infrastructure/prometheus.yml:/etc/prometheus/prometheus.yml:ro', 'prometheus-data:/prometheus']
+    command: ['--config.file=/etc/prometheus/prometheus.yml', '--storage.tsdb.retention.time=7d']
+    mem_limit: 384m
+  grafana:
+    image: grafana/grafana:12.2.0
+    profiles: ['observability']
+    ports: ['127.0.0.1:3000:3000']
+    environment:
+      GF_SECURITY_ADMIN_USER: cortexops
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_PASSWORD:?Run setup/configure-app.py first}
+      GF_USERS_ALLOW_SIGN_UP: 'false'
+      GF_ANALYTICS_REPORTING_ENABLED: 'false'
+      GF_ANALYTICS_CHECK_FOR_UPDATES: 'false'
+    volumes: ['grafana-data:/var/lib/grafana', './infrastructure/grafana/provisioning:/etc/grafana/provisioning:ro', './infrastructure/grafana/dashboards:/var/lib/grafana/dashboards:ro']
+    mem_limit: 384m
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:0.162.0
+    profiles: ['observability']
+    command: ['--config=/etc/otelcol-contrib/config.yaml']
+    ports: ['127.0.0.1:4318:4318', '127.0.0.1:13133:13133']
+    volumes: ['./infrastructure/otel-collector.yml:/etc/otelcol-contrib/config.yaml:ro']
+    mem_limit: 256m
+
+volumes:
+  uploads:
+  prometheus-data:
+  grafana-data:

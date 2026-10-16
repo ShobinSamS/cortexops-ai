@@ -1,0 +1,68 @@
+name: CortexOps verification
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      real_model:
+        description: Run the slower CPU Ollama investigation test
+        type: boolean
+        default: false
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - uses: actions/setup-node@v4
+        with: {node-version: '24', cache: npm, cache-dependency-path: frontend/package-lock.json}
+      - uses: astral-sh/setup-uv@v6
+        with: {version: '0.7.12', enable-cache: true}
+      - run: python setup/init-environment.py && python setup/configure-app.py
+      - run: docker compose -f compose.prerequisites.yml up -d --wait
+      - run: uv sync --locked --group dev
+        working-directory: backend
+      - uses: actions/cache@v4
+        with:
+          path: .cache/models
+          key: cpu-models-v1-minilm-l6
+      - run: backend/.venv/bin/python setup/cache-models.py
+      - run: npm ci --no-fund && npm run build
+        working-directory: frontend
+      - run: backend/.venv/bin/python -m pytest backend/tests -q --ignore=backend/tests/test_workflow.py
+      - if: inputs.real_model
+        run: |
+          curl -fsSL https://ollama.com/install.sh | sh
+          ollama serve > /tmp/ollama.log 2>&1 &
+          for attempt in $(seq 1 30); do curl -fsS http://127.0.0.1:11434/api/tags && break; sleep 2; done
+          ollama pull qwen3:1.7b
+          backend/.venv/bin/python -m pytest backend/tests/test_workflow.py -q
+      - run: |
+          .venv/bin/alembic upgrade head
+        working-directory: backend
+        continue-on-error: false
+      - run: |
+          .venv/bin/python -m app.cli setup-analytics
+          .venv/bin/python -m app > ../setup/ci-api.log 2>&1 &
+          .venv/bin/celery -A app.workers.celery_app:celery worker --pool=solo --concurrency=1 > ../setup/ci-worker.log 2>&1 &
+          for kind in github analytics knowledge monitoring incidents; do .venv/bin/python -m app.mcp.server --kind "$kind" > "../setup/ci-mcp-$kind.log" 2>&1 & done
+        working-directory: backend
+      - run: |
+          npm run dev > ../setup/ci-vite.log 2>&1 &
+          npx playwright install --with-deps chromium
+          for attempt in $(seq 1 30); do curl -fsS http://127.0.0.1:8000/health/ready && break; sleep 2; done
+          npx playwright test foundation.spec.ts knowledge.spec.ts tools.spec.ts --workers=1
+        working-directory: frontend
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: verification-logs
+          path: |
+            setup/*.log
+            frontend/test-results
+      - if: always()
+        run: docker compose -f compose.prerequisites.yml stop

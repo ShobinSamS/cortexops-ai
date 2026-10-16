@@ -1,0 +1,28 @@
+import { test, expect } from '@playwright/test';
+import crypto from 'node:crypto';
+test('register, create investigation, persist, and render mobile navigation', async ({ page }) => {
+  await page.goto('/');
+  await page.getByRole('button', { name: 'Create a workspace' }).click();
+  await page.getByLabel('Your name').fill('Browser QA');
+  await page.getByLabel('Workspace name').fill('Browser verification');
+  await page.getByLabel('Email address').fill(`browser-${crypto.randomUUID()}@example.test`);
+  await page.getByLabel('Password', { exact: true }).fill(crypto.randomBytes(24).toString('base64url'));
+  await page.getByRole('button', { name: 'Create workspace', exact: true }).click();
+  await expect(page.getByRole('heading', { name: 'Workspace overview' })).toBeVisible();
+  await page.screenshot({ path: '../docs/screenshots/overview.png', fullPage: true });
+  await page.getByRole('link', { name: 'New investigation' }).click();
+  await page.getByLabel('Investigation title').fill('Browser integration verification');
+  await page.getByLabel('What would you like to investigate?').fill('Investigate changes to the document verification model after deployment v2.3.');
+  await page.getByRole('button', { name: 'Create investigation', exact: true }).click();
+  await expect(page.getByRole('heading', { name: 'Browser integration verification' })).toBeVisible();
+  await page.reload();
+  await expect(page.getByRole('heading', { name: 'Browser integration verification' })).toBeVisible();
+  await page.getByRole('link', { name: 'Investigations', exact: true }).click();
+  await expect(page.getByRole('link', { name: 'Browser integration verification', exact: true })).toBeVisible();
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.getByRole('button', { name: 'Open navigation' }).click();
+  await expect(page.getByRole('link', { name: 'Overview', exact: true })).toBeVisible();
+  await page.getByRole('link', { name: 'Overview', exact: true }).click();
+  await expect(page.getByRole('heading', { name: 'Workspace overview' })).toBeVisible();
+  await page.screenshot({ path: '../docs/screenshots/mobile.png', fullPage: true });
+});

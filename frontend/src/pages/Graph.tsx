@@ -1,0 +1,20 @@
+import { useMemo, useState } from 'react';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { ReactFlow, Background, Controls, Handle, Position, type NodeProps } from '@xyflow/react';
+import '@xyflow/react/dist/style.css';
+import { RefreshCw } from 'lucide-react';
+import { api, useAuth } from '@/lib/api';
+import { Panel, PageTitle, Loading, Empty, ErrorBox } from '@/components/common';
+
+function EntityNode({ data }: NodeProps) { return <div className={`graph-node ${data.kind}`}><Handle type="target" position={Position.Top}/><small>{String(data.kind).toUpperCase()}</small><strong>{String(data.label)}</strong><Handle type="source" position={Position.Bottom}/></div>; }
+const nodeTypes = { entity: EntityNode };
+
+export function Graph() {
+  const cache = useQueryClient(); const role = useAuth(s => s.user?.role); const [selected, setSelected] = useState<any>(); const [jobId, setJobId] = useState('');
+  const q = useQuery({ queryKey: ['graph'], queryFn: () => api('/graph'), refetchInterval: 10000 });
+  const sync = useMutation({ mutationFn: () => api('/graph/sync', { method: 'POST' }), onSuccess: x => setJobId(x.job_id) });
+  const job = useQuery({ queryKey: ['job', jobId], queryFn: () => api(`/jobs/${jobId}`), enabled: !!jobId, refetchInterval: query => ['completed', 'failed'].includes(query.state.data?.status) ? false : 1500 });
+  const nodes = useMemo(() => { const counts: Record<string, number> = {}; const kinds = [...new Set<string>((q.data?.nodes || []).map((n: any) => n.kind))]; return (q.data?.nodes || []).map((n: any) => ({ id: n.id, type: 'entity', position: { x: kinds.indexOf(n.kind) * 245, y: (counts[n.kind] = (counts[n.kind] || 0) + 1) * 100 }, data: { ...n, label: n.label } })); }, [q.data]);
+  const edges = useMemo(() => (q.data?.edges || []).map((e: any) => ({ ...e, label: e.kind, style: { stroke: '#65846b' }, labelStyle: { fill: '#bad5c3', fontSize: 9 }, labelBgStyle: { fill: '#182820' } })), [q.data]);
+  return <><PageTitle title="Knowledge graph" description="Explore recorded relationships across documents, services, releases, code, and incidents." action={<button className="button secondary" disabled={!['owner', 'admin'].includes(role || '') || sync.isPending || (!!jobId && !['completed', 'failed'].includes(job.data?.status))} onClick={() => sync.mutate()}><RefreshCw size={15}/>Rebuild & sync</button>}/><ErrorBox error={q.error || sync.error || job.error}/>{jobId && <p className="source-line">Sync {job.data?.status || 'queued'} {job.data?.error} {job.data?.status === 'completed' && <button className="text-link" onClick={() => { cache.invalidateQueries({ queryKey: ['graph'] }); setJobId(''); }}>Refresh graph</button>}</p>}<Panel title="Connected evidence" subtitle={`${q.data?.nodes.length || 0} entities · ${q.data?.edges.length || 0} relationships`}><p className="source-line">Canonical source: PostgreSQL · Neo4j projection: {q.data?.projection.status || 'loading'}. Select an entity to inspect its provenance.</p>{q.isPending ? <Loading/> : q.data?.nodes.length ? <div className="graph-layout"><ReactFlow colorMode="dark" nodes={nodes} edges={edges} nodeTypes={nodeTypes} fitView nodesDraggable onNodeClick={(_, n) => setSelected(n.data)}><Background color="#31453c" gap={25}/><Controls/></ReactFlow></div> : <Empty title="No graph entities yet">Upload documents with Service:, Deployment:, Repository:, or Model: metadata, or load the synthetic incident, then sync.</Empty>}</Panel>{selected && <Panel title={selected.label} subtitle={`${selected.kind} entity`}><div className="prose"><h3>Recorded properties</h3><pre className="json">{JSON.stringify(selected.properties, null, 2)}</pre><h3>Relationships and evidence</h3>{q.data?.edges.filter((e: any) => e.source === selected.id || e.target === selected.id).map((e: any) => <div key={e.id}><p>{e.kind} · {q.data.nodes.find((n: any) => n.id === (e.source === selected.id ? e.target : e.source))?.label}</p><pre className="json">{JSON.stringify(e.evidence, null, 2)}</pre></div>)}</div></Panel>}</>;
+}

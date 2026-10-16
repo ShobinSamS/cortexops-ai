@@ -1,0 +1,42 @@
+{
+  "name": "cortexops-ai-frontend",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24 <25"
+  },
+  "description": "Dependency environment; UI implementation follows prerequisite setup.",
+  "dependencies": {
+    "@radix-ui/react-slot": "^1.0.0",
+    "@tanstack/react-query": "^5.0.0",
+    "@xyflow/react": "^12.0.0",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.0.0",
+    "lucide-react": "^0.468.0",
+    "radix-ui": "^1.8.1",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-router-dom": "^7.0.0",
+    "recharts": "^3.0.0",
+    "tailwind-merge": "^3.0.0",
+    "zustand": "^5.0.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.50.0",
+    "@tailwindcss/vite": "^4.0.0",
+    "@types/node": "^24.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "^5.0.0",
+    "tailwindcss": "^4.0.0",
+    "typescript": "^5.8.0",
+    "vite": "^7.0.0"
+  },
+  "scripts": {
+    "test:e2e": "playwright test",
+    "preview": "vite preview --host 127.0.0.1",
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build"
+  }
+}

@@ -1,0 +1,24 @@
+import { test, expect } from '@playwright/test';
+import crypto from 'node:crypto';
+test('upload, inspect cited chunks and search through the real worker', async ({ page }) => {
+  test.setTimeout(240000);
+  await page.goto('/');
+  await page.getByRole('button', { name: 'Create a workspace' }).click();
+  await page.getByLabel('Your name').fill('Knowledge QA');
+  await page.getByLabel('Workspace name').fill('Knowledge browser verification');
+  await page.getByLabel('Email address').fill(`knowledge-${crypto.randomUUID()}@example.test`);
+  await page.getByLabel('Password', { exact: true }).fill(crypto.randomBytes(24).toString('base64url'));
+  await page.getByRole('button', { name: 'Create workspace', exact: true }).click();
+  await expect(page.getByRole('heading', { name: 'Workspace overview' })).toBeVisible();
+  await page.getByRole('link', { name: 'Knowledge base', exact: true }).click();
+  const marker = crypto.randomUUID();
+  await page.locator('input[type=file]').setInputFiles({ name: 'release-evidence.md', mimeType: 'text/markdown', buffer: Buffer.from(`# Release ${marker}\nThe image pipeline changed interpolation from bicubic to nearest-neighbor. Low-resolution scans lost fine character strokes.\n`) });
+  await expect(page.getByText('indexed', { exact: true })).toBeVisible({ timeout: 180000 });
+  await page.getByRole('button', { name: /release-evidence.md/ }).first().click();
+  await expect(page.getByText('Chunk 1', { exact: true })).toBeVisible();
+  await page.getByLabel('Search your knowledge').fill('Which image interpolation change affected low-resolution scans?');
+  await page.getByRole('button', { name: 'Search evidence', exact: true }).click();
+  await expect(page.getByRole('heading', { name: 'Retrieved evidence', exact: true })).toBeVisible({ timeout: 120000 });
+  await expect(page.getByText('1 cited results returned.')).toBeVisible();
+  await page.screenshot({ path: '../docs/screenshots/knowledge.png', fullPage: true });
+});
