@@ -33,14 +33,16 @@ jobs:
       - run: backend/.venv/bin/python setup/cache-models.py
       - run: npm ci --no-fund && npm run build
         working-directory: frontend
-      - run: backend/.venv/bin/python -m pytest backend/tests -q --ignore=backend/tests/test_workflow.py
+      - run: .venv/bin/python -m pytest tests -q --ignore=tests/test_workflow.py
+        working-directory: backend
       - if: inputs.real_model
         run: |
           curl -fsSL https://ollama.com/install.sh | sh
           ollama serve > /tmp/ollama.log 2>&1 &
           for attempt in $(seq 1 30); do curl -fsS http://127.0.0.1:11434/api/tags && break; sleep 2; done
           ollama pull qwen3:1.7b
-          backend/.venv/bin/python -m pytest backend/tests/test_workflow.py -q
+          cd backend
+          .venv/bin/python -m pytest tests/test_workflow.py -q
       - run: |
           .venv/bin/alembic upgrade head
         working-directory: backend
