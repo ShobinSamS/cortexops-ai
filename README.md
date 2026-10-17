@@ -12,8 +12,9 @@ External changes require a separate human approval of the exact action/destinati
 
 ## Status and verification
 
-The complete Docker application starts successfully through Nginx. Final
-evaluation and CI checks are ongoing; the results below describe their exact scope.
+The complete local demonstration is implemented and verified through Nginx.
+Detailed test scope, measured evaluation results and limits are recorded in the
+[verification guide](docs/VERIFICATION.md).
 
 | Check | Recorded result |
 | --- | --- |
@@ -23,9 +24,10 @@ evaluation and CI checks are ongoing; the results below describe their exact sco
 | Evidence validation | **6 passed**, including fabricated-citation rejection and honest insufficiency |
 | Frontend production build | TypeScript/Vite build passed; route bundles split |
 | Docker deployment | Backend/frontend images built; init, API, two workers, five MCP servers and Nginx started |
-| Browser | All four workflows passed individually against Nginx, including real inference; final combined rerun pending |
+| Browser | **4 passed in 3.0 minutes** against Nginx, including real inference and PDF download |
 | Observability | Real collector spans, Prometheus worker gauges and provisioned Grafana dashboard verified |
-| Evaluation / CI | Five baseline scenarios recorded; abstention and CI configuration fixes being rechecked |
+| Evaluation | Five real baseline scenarios; separate unrelated-query recheck abstained and produced no supported hypothesis |
+| CI | [GitHub Actions passed](https://github.com/ShobinSamS/cortexops-ai/actions/runs/38998911293): Linux integration, build, static and browser checks |
 
 Tests use real isolated databases, queues, model inference and SDK round trips.
 Mocks are limited to focused evidence-validation tests. This is an engineering
@@ -235,6 +237,7 @@ do not run a native stack and isolated test stack together on low available RAM.
 - [Architecture, ER diagram, agents and contracts](docs/ARCHITECTURE.md)
 - [Operations, monitoring, recovery, backups and boundaries](docs/OPERATIONS.md)
 - [Evaluation](evaluation/README.md), [original brief](docs/PROJECT_BRIEF.txt)
+- [Recorded acceptance checks and evaluation results](docs/VERIFICATION.md)
 - Live [Swagger API](http://127.0.0.1:8000/docs), [OpenAPI JSON](http://127.0.0.1:8000/openapi.json)
 - [MCP server ownership/startup](mcp-servers/README.md)
 
@@ -250,11 +253,15 @@ contains actual Compose monitoring/provisioning configs. Lockfiles pin dependenc
 
 Actual browser captures, not design mockups:
 
-![Overview](docs/screenshots/overview.png)
+![Overview with synthetic observations](docs/screenshots/overview-populated.png)
 ![Knowledge search](docs/screenshots/knowledge.png)
+![Connected evidence graph](docs/screenshots/graph.png)
+![Live investigation](docs/screenshots/execution-live.png)
 
-[Mobile view](docs/screenshots/mobile.png). Graph, execution and report captures
-are added as the final browser workflow verifies them.
+[Completed execution](docs/screenshots/execution.png), [report](docs/screenshots/report.png),
+[MCP workbench](docs/screenshots/tools.png), [approval review](docs/screenshots/approvals.png),
+and [mobile view](docs/screenshots/mobile.png). Exports from synthetic verification
+are under `output/pdf/`.
 
 ## Troubleshooting
 
@@ -277,3 +284,6 @@ are added as the final browser workflow verifies them.
 
 Stop with `setup/dev.ps1 -Action stop` or `docker compose stop`. Named volumes
 persist. `down --volumes` deletes data and is not a routine shutdown command.
+
+Project source is [MIT licensed](LICENSE). Dependency/service/model licenses retain
+their own terms; see the setup license inventory and linked upstream licenses.

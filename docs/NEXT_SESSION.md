@@ -1,5 +1,10 @@
 # Resume checkpoint - 16 October 2026
 
+**Superseded on 17 October 2026:** the remaining local implementation and acceptance
+checks below have been completed. See `VERIFICATION.md` for 22 backend tests,
+4 browser workflows, actual telemetry, evaluation results and successful GitHub CI.
+The original pause notes are retained as development history, not a current to-do.
+
 The user paused implementation to continue tomorrow and requested a new GitHub
 repository containing the current project. Continue the original full application
 objective next session; do not treat Phase 6 as complete.

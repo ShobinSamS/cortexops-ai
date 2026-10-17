@@ -26,6 +26,7 @@ test('discover real MCP tools, invoke a read, and reject a proposed write', asyn
   await page.getByLabel('Arguments (JSON)').fill(JSON.stringify({ title: 'Browser approval verification', body: 'This is a local synthetic action proposed for review, then rejected by the user.' }));
   await page.getByRole('button', { name: 'Request approval', exact: true }).click();
   await expect(page.getByText('Approval requested. Review the exact payload on the Approvals page before any write can execute.')).toBeVisible();
+  await page.evaluate(() => window.scrollTo(0, 0));
   await page.screenshot({ path: '../docs/screenshots/tools.png', fullPage: true });
   await page.getByRole('link', { name: 'Approvals', exact: true }).click();
   await expect(page.getByRole('heading', { name: 'Approval inbox' })).toBeVisible();

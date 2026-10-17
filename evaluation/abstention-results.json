@@ -1,0 +1,30 @@
+{
+  "recorded_at": "2026-10-17T03:30:32.893723+00:00",
+  "mode": "investigation",
+  "limitations": [
+    "Small synthetic dataset; not a general accuracy estimate.",
+    "Citation-ID validity and expected-term matching do not measure semantic entailment or causal correctness."
+  ],
+  "results": [
+    {
+      "id": "irrelevant-astronomy",
+      "category": "irrelevant_documents",
+      "workspace_id": "1bbc04ea-3c20-4565-aa4f-80da20050dbf",
+      "retrieval": {
+        "k": 6,
+        "recall_at_k": null,
+        "precision_at_k": null,
+        "irrelevant_abstention": true,
+        "retrieved_documents": [],
+        "scores": []
+      },
+      "investigation_id": "0d93aa4e-5414-497b-80c7-d723f4d7336a",
+      "job_status": "completed",
+      "report_id": "a177c592-38c2-4a39-ab50-1159e3884733",
+      "outcome": "no_supported_hypothesis",
+      "citation_id_validity": null,
+      "expected_term_match": null,
+      "duration_seconds": 64.97
+    }
+  ]
+}
