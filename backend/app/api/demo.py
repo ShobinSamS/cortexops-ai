@@ -8,5 +8,5 @@ router = APIRouter()
 
 
 @router.post("/demo/seed", status_code=202)
-async def seed_demo(p: Principal = Depends(require_role("owner")), db: AsyncSession = Depends(get_db)):
+async def seed_demo(p: Principal = Depends(require_role("owner")), db: AsyncSession = Depends(get_db, scope="function")):
     return await seed(db, p)

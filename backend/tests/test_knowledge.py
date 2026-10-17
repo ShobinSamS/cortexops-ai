@@ -1,9 +1,8 @@
 import time
 from uuid import uuid4
-from pathlib import Path
 
 from conftest import account
-from app.rag.parsing import ParsedSection, chunk_sections, parse_file, validate_file
+from app.rag.parsing import ParsedSection, chunk_sections
 from app.rag.retrieval import sparse_vector
 
 
@@ -57,6 +56,8 @@ def test_real_ingestion_hybrid_retrieval_and_delete(client, worker):
     assert evidence and evidence[0]["reference"]["document_id"] == doc_id
     assert evidence[0]["reference"]["page"] == 0
     assert "nearest-neighbor" in evidence[0]["content"]
+    unrelated = client.post("/api/v1/knowledge/search", headers=headers, json={"query": "Jupiter satellite orbital period celestial mechanics"})
+    assert wait_job(client, headers, unrelated.json()["job_id"])["evidence"] == []
     other_search = client.post("/api/v1/knowledge/search", headers=outsider, json={"query": f"hermes-{marker} accuracy"})
     assert wait_job(client, outsider, other_search.json()["job_id"])["evidence"] == []
     reindex = client.post(f"/api/v1/documents/{doc_id}/reindex", headers=headers)

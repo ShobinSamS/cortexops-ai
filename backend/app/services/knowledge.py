@@ -63,7 +63,11 @@ async def search_knowledge(workspace_id: str, query: str, limit=6, document_ids=
                              "reference": {"document_id": doc.id, "chunk_id": chunk.id, "page": chunk.page, "section": chunk.section,
                                            "filename": doc.filename, "sha256": doc.sha256}, "score": candidate["score"]})
             evidence[-1]["reference"]["graph_expanded"] = candidate.get("graph_expanded", False)
-    return await asyncio.to_thread(retrieval.rerank, query, evidence, limit)
+    ranked = await asyncio.to_thread(retrieval.rerank, query, evidence, limit)
+    # A query with no plausible match should not acquire relevance merely because
+    # every available chunk was ranked. This logit threshold needs calibration
+    # for the configured cross-encoder/corpus; it is not a probability estimate.
+    return ranked if ranked and ranked[0]["score"] >= get_settings().retrieval_min_score else []
 
 
 async def delete_document(workspace_id, document_id):

@@ -7,7 +7,6 @@ from mcp.client.streamable_http import streamable_http_client
 import httpx
 from sqlalchemy import select
 
-from app.core.config import get_settings
 from app.core.database import Session
 from app.core.security import issue_token
 from app.models.entities import MCPServer

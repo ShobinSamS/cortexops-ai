@@ -47,7 +47,7 @@ def test_empty_sources_produce_explicit_insufficiency_not_a_cause():
 
 def test_change_description_uses_the_models_choice_not_a_hardcoded_first_item(monkeypatch):
     async def select_second(schema, *args, **kwargs):
-        return schema(primary_change_id="C2", confidence="medium", alternative_change_ids=[], recommendations=["Reproduce with the original setting."], limitations=[])
+        return schema(primary_change_id="C2", confidence="medium", alternative_change_ids=[], recommendations=["Reproduce with the original setting."], limitations=["There are no observations."])
     monkeypatch.setattr(workflow, "structured", select_second)
     state = {"question": "Which observed change merits validation?", "observations": 2,
              "evidence": [{"id": "source-a", "source": "get_recent_commits", "title": "A", "content": "change A"}, {"id": "source-b", "source": "get_recent_commits", "title": "B", "content": "change B"}],
@@ -58,3 +58,11 @@ def test_change_description_uses_the_models_choice_not_a_hardcoded_first_item(mo
     assert "beta_before" in result["summary"] and "beta_after" in result["summary"]
     assert "alpha_before" not in result["summary"]
     assert result["findings"][0]["evidence_ids"] == ["source-b"]
+    assert "There are no observations." not in result["limitations"]
+
+
+def test_supported_abstention_preserves_its_explanation():
+    result = asyncio.run(workflow.evidence_validation({"evidence": [{"id": "doc", "content": "Unrelated context"}], "observations": 1,
+                     "diagnosis": {"summary": "No evidence supports an orbital cause.", "findings": [], "recommendations": [], "limitations": []}}))
+    assert result["diagnosis"]["summary"] == "No evidence supports an orbital cause."
+    assert result["diagnosis"]["findings"] == []

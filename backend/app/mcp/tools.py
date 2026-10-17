@@ -1,15 +1,14 @@
 import asyncio
-from datetime import timedelta
 import json
 import re
 import time
 
 import httpx
-from sqlalchemy import func, select
+from sqlalchemy import select
 
 from app.core.config import get_settings
 from app.core.database import Session, transaction
-from app.core.security import ROLES, hash_token
+from app.core.security import ROLES
 from app.mcp.context import current_context
 from app.mcp.contracts import ToolResult
 from app.models.entities import MCPServer, ToolExecution, AuditLog, RepositoryChange, ApplicationLog, Deployment, Incident, Document, DocumentChunk, Approval, BackgroundJob, utcnow

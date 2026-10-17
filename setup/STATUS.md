@@ -1,7 +1,7 @@
 # Verified environment — 16 October 2026
 
-The core development prerequisites are installed and working. Application
-implementation has not started.
+This is the initial prerequisite audit. The application has since been implemented;
+the root README records current acceptance checks and deployment status.
 
 | Requirement | Result |
 | --- | --- |
@@ -29,13 +29,13 @@ Passed checks:
 - Real Qwen3 inference, embedding inference and reranker inference.
 - npm installation audit: zero known vulnerabilities reported at installation.
 
-These results verify the environment, not the future application's acceptance
-criteria. See `SETUP.md` for commands, license references and resource guidance.
+These initial results verify the environment. See the root README for application
+acceptance results and `SETUP.md` for license references and resource guidance.
 
-Neo4j Community is configured as an optional Compose profile and has not been
-downloaded or started. shadcn/ui source generation, Nginx, Prometheus, Grafana OSS,
-the OpenTelemetry Collector and GitHub Actions configuration belong to the
-application implementation phases. Their deployment setup remains pending.
+Neo4j Community has since been downloaded and verified by integration tests.
+shadcn/ui components, Nginx, Prometheus, Grafana OSS, OpenTelemetry Collector and
+GitHub Actions configuration are implemented. The operations guide explains their
+optional profiles and deployment boundaries.
 
 Resolved package versions and licenses are recorded in `python-installed.json`,
 `python-licenses.json`, `frontend-licenses.json` and the package lockfiles.

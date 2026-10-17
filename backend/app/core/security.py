@@ -54,7 +54,7 @@ async def principal_from_token(token: str, db: AsyncSession, audience="cortexops
     return Principal(user.id, member.workspace_id, member.role, user.email, user.name)
 
 
-async def current_principal(credentials: HTTPAuthorizationCredentials | None = Depends(bearer), db: AsyncSession = Depends(get_db)):
+async def current_principal(credentials: HTTPAuthorizationCredentials | None = Depends(bearer), db: AsyncSession = Depends(get_db, scope="function")):
     if credentials is None:
         raise HTTPException(401, "Authentication required")
     return await principal_from_token(credentials.credentials, db)

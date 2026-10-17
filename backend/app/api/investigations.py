@@ -8,7 +8,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.database import Session, get_db
 from app.core.security import Principal, current_principal, principal_from_token, require_role
-from app.models.entities import Investigation, InvestigationStep, AgentExecution, InvestigationEvent, ToolExecution, BackgroundJob, Report
+from app.models.entities import Investigation, InvestigationStep, AgentExecution, InvestigationEvent, ToolExecution, BackgroundJob
 from app.services.common import audit, owned, serialize
 from app.services.jobs import enqueue
 from app.services.events import emit
@@ -18,7 +18,7 @@ router = APIRouter()
 
 
 @router.post("/investigations/{investigation_id}/{action}")
-async def control(investigation_id: str, action: str, p: Principal = Depends(require_role("analyst")), db: AsyncSession = Depends(get_db)):
+async def control(investigation_id: str, action: str, p: Principal = Depends(require_role("analyst")), db: AsyncSession = Depends(get_db, scope="function")):
     if action not in {"start", "pause", "resume", "cancel"}:
         raise HTTPException(404, "Unknown investigation action")
     item = await owned(db, Investigation, investigation_id, p, lock=True)
@@ -52,7 +52,7 @@ async def control(investigation_id: str, action: str, p: Principal = Depends(req
 
 
 @router.get("/investigations/{investigation_id}/steps")
-async def steps(investigation_id: str, p: Principal = Depends(current_principal), db: AsyncSession = Depends(get_db)):
+async def steps(investigation_id: str, p: Principal = Depends(current_principal), db: AsyncSession = Depends(get_db, scope="function")):
     await owned(db, Investigation, investigation_id, p)
     rows = list(await db.scalars(select(InvestigationStep).where(InvestigationStep.investigation_id == investigation_id, InvestigationStep.workspace_id == p.workspace_id).order_by(InvestigationStep.position)))
     executions = list(await db.scalars(select(AgentExecution).where(AgentExecution.investigation_id == investigation_id, AgentExecution.workspace_id == p.workspace_id).order_by(AgentExecution.created_at)))
@@ -60,13 +60,13 @@ async def steps(investigation_id: str, p: Principal = Depends(current_principal)
 
 
 @router.get("/investigations/{investigation_id}/events")
-async def events(investigation_id: str, after: int = 0, p: Principal = Depends(current_principal), db: AsyncSession = Depends(get_db)):
+async def events(investigation_id: str, after: int = 0, p: Principal = Depends(current_principal), db: AsyncSession = Depends(get_db, scope="function")):
     await owned(db, Investigation, investigation_id, p)
     return [serialize(x) for x in await db.scalars(select(InvestigationEvent).where(InvestigationEvent.investigation_id == investigation_id, InvestigationEvent.workspace_id == p.workspace_id, InvestigationEvent.sequence > max(0, after)).order_by(InvestigationEvent.sequence).limit(1000))]
 
 
 @router.get("/investigations/{investigation_id}/tools")
-async def tools(investigation_id: str, p: Principal = Depends(current_principal), db: AsyncSession = Depends(get_db)):
+async def tools(investigation_id: str, p: Principal = Depends(current_principal), db: AsyncSession = Depends(get_db, scope="function")):
     await owned(db, Investigation, investigation_id, p)
     return [serialize(x) for x in await db.scalars(select(ToolExecution).where(ToolExecution.investigation_id == investigation_id, ToolExecution.workspace_id == p.workspace_id).order_by(ToolExecution.created_at).limit(100))]
 

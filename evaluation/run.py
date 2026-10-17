@@ -4,6 +4,7 @@ Each case gets an isolated evaluation workspace. Cases persist for UI inspection
 Use --investigate to additionally run the CPU model; retrieval-only is the default.
 """
 import argparse
+from datetime import datetime, timezone
 import json
 from pathlib import Path
 import secrets
@@ -80,7 +81,12 @@ if __name__ == "__main__":
     parser.add_argument("--base-url", default="http://127.0.0.1:8000")
     parser.add_argument("--case", action="append", default=[])
     parser.add_argument("--investigate", action="store_true")
+    parser.add_argument("--output", default="evaluation/results.json")
     args = parser.parse_args()
+    output_path = (ROOT / args.output).resolve()
+    if not output_path.is_relative_to(ROOT):
+        raise SystemExit("Evaluation output must stay inside the project directory")
+    output_path.parent.mkdir(parents=True, exist_ok=True)
     cases = json.loads((ROOT / "evaluation/cases.json").read_text(encoding="utf-8"))
     results = []
     for case in cases:
@@ -94,5 +100,5 @@ if __name__ == "__main__":
             result = {"id": case["id"], "error": f"{type(exc).__name__}: evaluation failed; inspect local service logs"}
         results.append(result)
         print(json.dumps(result), flush=True)
-        (ROOT / "evaluation/results.json").write_text(json.dumps({"mode": "investigation" if args.investigate else "retrieval", "limitations": ["Small synthetic dataset; not a general accuracy estimate.", "Citation-ID validity and expected-term matching do not measure semantic entailment or causal correctness."], "results": results}, indent=2), encoding="utf-8")
-    raise SystemExit(1 if any("error" in r for r in results) else 0)
+        output_path.write_text(json.dumps({"recorded_at": datetime.now(timezone.utc).isoformat(), "mode": "investigation" if args.investigate else "retrieval", "limitations": ["Small synthetic dataset; not a general accuracy estimate.", "Citation-ID validity and expected-term matching do not measure semantic entailment or causal correctness."], "results": results}, indent=2), encoding="utf-8")
+    raise SystemExit(1 if any("error" in r or any(r.get(k) is False for k in ("expected_status_match", "expected_outcome_match", "expected_term_match")) for r in results) else 0)

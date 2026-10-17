@@ -1,7 +1,7 @@
 # CortexOps AI prerequisite setup
 
-This folder prepares the environment from the supplied project prompt. Application
-implementation, migrations, authentication, agents, and UI pages come afterwards.
+This folder prepares the environment from the supplied project prompt. The root
+README documents the implemented application, launcher, containers and test results.
 
 ## Machine and development profile
 
@@ -141,8 +141,8 @@ BSD, ISC, and LGPL (psycopg). Service/model license references:
 
 shadcn/ui components are generated into frontend source when the UI is initialized;
 the Radix Slot, styling utilities, Tailwind, and icon prerequisites are installed.
-Nginx, Prometheus, Grafana OSS, and the OpenTelemetry Collector will be configured
-as Docker services when application endpoints and telemetry exist. The Python
+Nginx, Prometheus, Grafana OSS, and the OpenTelemetry Collector are configured
+as Docker services; see `docs/OPERATIONS.md` for profiles and access. The Python
 OpenTelemetry SDK/exporter/instrumentation and Prometheus client are installed.
 GitHub Actions is repository CI configuration, not a local program to install.
 An optional GitHub personal access token will only be needed for real GitHub

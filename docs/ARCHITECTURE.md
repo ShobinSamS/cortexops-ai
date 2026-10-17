@@ -106,7 +106,7 @@ for exact request/response fields once implementation is running.
 | MCP | `GET /mcp/servers`; `POST /mcp/servers/{id}/discover`; `POST /mcp/tools/invoke`; `GET /mcp/executions` | Analyst+ / permission checked |
 | Approvals | `GET /approvals`; `POST /approvals/{id}/decision` | Admin+ for external writes |
 | Reports | `GET /reports`; `GET /reports/{id}`; `GET /reports/{id}/export?format=md|pdf` | Member |
-| Graph | `GET /graph` | Member |
+| Graph | `GET /graph`; `POST /graph/sync` | Member read; admin+ sync |
 | Workspace | `GET /workspace`; `PATCH /workspace`; `GET /members`; `POST /members`; `PATCH /members/{id}` | Member / admin+ |
 | Configuration | `GET/PUT /settings/model`; `GET /audit`; `GET /data-sources` | Admin+ / member for sources |
 | Demo | `POST /demo/seed` | Owner; local synthetic data only |
@@ -187,7 +187,16 @@ views, not the application owner's credentials.
   validation may use Celery's solo pool; Linux containers are supported deployment.
 - WebSocket events are persisted before publication, so Redis is not event history.
 - No external write follows directly from an LLM response; approval is scoped to
-  payload hash, user/workspace, expiry and single consumption.
+  an arguments-and-destination hash, user/workspace, expiry and single consumption.
+  A change between local and live GitHub modes invalidates the earlier approval.
+- HTTP database dependencies use function scope so commits/errors finish before
+  the response is sent. This prevents an immediate UI refetch reading stale writes.
+- Code diagnosis selects actual recorded change IDs; wording derives from their
+  before/after diff. Numeric observations are computed separately. Unchecked
+  model-authored caveats cannot overwrite recorded source coverage.
+- Retrieval applies a configurable query-level floor to the top cross-encoder
+  logit. The default is a development calibration, not a probability/semantic
+  guarantee. Low scores can produce an empty evidence set; diagnosis can abstain.
 - RAG vectors and graph projections are rebuildable; canonical files/chunks remain
   in durable storage. Development volume storage is not a backup strategy.
 - Observability, evaluations and security checks provide evidence of behavior;

@@ -1,5 +1,4 @@
 import time
-from sqlalchemy import select
 from conftest import account
 from test_knowledge import wait_job
 

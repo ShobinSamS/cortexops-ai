@@ -1,6 +1,6 @@
 import asyncio
 import logging
-from sqlalchemy import select, text
+from sqlalchemy import text
 
 from app.core.database import engine, transaction
 from app.models.entities import BackgroundJob, Document, utcnow

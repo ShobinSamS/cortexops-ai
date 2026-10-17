@@ -15,7 +15,7 @@ async def graph(p: Principal = Depends(current_principal)):
 
 
 @router.post("/graph/sync", status_code=202)
-async def sync(p: Principal = Depends(require_role("admin")), db: AsyncSession = Depends(get_db)):
+async def sync(p: Principal = Depends(require_role("admin")), db: AsyncSession = Depends(get_db, scope="function")):
     job = await enqueue(db, p, "graph_sync", {})
     audit(db, p, "graph.sync", "workspace", p.workspace_id)
     return {"job_id": job.id}

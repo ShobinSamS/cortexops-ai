@@ -28,7 +28,7 @@ class Permissions(BaseModel):
 
 
 @router.post("/mcp/servers/{server_id}/discover")
-async def discover(server_id: str, p: Principal = Depends(require_role("analyst")), db: AsyncSession = Depends(get_db)):
+async def discover(server_id: str, p: Principal = Depends(require_role("analyst")), db: AsyncSession = Depends(get_db, scope="function")):
     server = await owned(db, MCPServer, server_id, p)
     try:
         server.tools = await client.discover(server.kind, p)
@@ -44,7 +44,7 @@ async def discover(server_id: str, p: Principal = Depends(require_role("analyst"
 
 
 @router.patch("/mcp/servers/{server_id}/permissions")
-async def permissions(server_id: str, data: Permissions, p: Principal = Depends(require_role("admin")), db: AsyncSession = Depends(get_db)):
+async def permissions(server_id: str, data: Permissions, p: Principal = Depends(require_role("admin")), db: AsyncSession = Depends(get_db, scope="function")):
     server = await owned(db, MCPServer, server_id, p, lock=True)
     if any(tool not in READ_TOOLS[server.kind] for tool in data.allowed_tools):
         raise HTTPException(400, "Permission list includes an unknown tool")
@@ -54,7 +54,7 @@ async def permissions(server_id: str, data: Permissions, p: Principal = Depends(
 
 
 @router.post("/mcp/tools/invoke")
-async def invoke(data: ToolInvocation, p: Principal = Depends(require_role("analyst")), db: AsyncSession = Depends(get_db)):
+async def invoke(data: ToolInvocation, p: Principal = Depends(require_role("analyst")), db: AsyncSession = Depends(get_db, scope="function")):
     import json
     if len(json.dumps(data.arguments)) > 32000:
         raise HTTPException(400, "Tool arguments exceed the size limit")
@@ -77,7 +77,7 @@ async def invoke(data: ToolInvocation, p: Principal = Depends(require_role("anal
 
 
 @router.get("/mcp/executions")
-async def executions(investigation_id: str | None = None, p: Principal = Depends(current_principal), db: AsyncSession = Depends(get_db)):
+async def executions(investigation_id: str | None = None, p: Principal = Depends(current_principal), db: AsyncSession = Depends(get_db, scope="function")):
     statement = select(ToolExecution).where(ToolExecution.workspace_id == p.workspace_id)
     if investigation_id:
         await owned(db, Investigation, investigation_id, p)
@@ -86,12 +86,12 @@ async def executions(investigation_id: str | None = None, p: Principal = Depends
 
 
 @router.get("/approvals")
-async def approvals(p: Principal = Depends(current_principal), db: AsyncSession = Depends(get_db)):
+async def approvals(p: Principal = Depends(current_principal), db: AsyncSession = Depends(get_db, scope="function")):
     return [serialize(x) for x in await db.scalars(select(Approval).where(Approval.workspace_id == p.workspace_id).order_by(Approval.created_at.desc()).limit(100))]
 
 
 @router.post("/approvals/{approval_id}/decision")
-async def decide(approval_id: str, data: ApprovalDecision, p: Principal = Depends(require_role("admin")), db: AsyncSession = Depends(get_db)):
+async def decide(approval_id: str, data: ApprovalDecision, p: Principal = Depends(require_role("admin")), db: AsyncSession = Depends(get_db, scope="function")):
     approval = await owned(db, Approval, approval_id, p, lock=True)
     if approval.status != "pending" or approval.expires_at <= utcnow():
         raise HTTPException(409, "Approval expired or already decided")

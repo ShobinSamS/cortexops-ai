@@ -1,11 +1,9 @@
 from datetime import timedelta
-import json
 
-from fastapi import HTTPException
 from sqlalchemy import select
 
-from app.core.database import Session, transaction
-from app.core.security import Principal, hash_token
+from app.core.database import transaction
+from app.core.security import Principal
 from app.models.entities import Approval, User, WorkspaceMember, utcnow
 from app.services.common import audit
 from app.services.destinations import authorization_hash, write_target

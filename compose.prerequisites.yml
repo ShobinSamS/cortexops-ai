@@ -31,7 +31,7 @@ services:
     volumes: ["qdrant-data:/qdrant/storage"]
     mem_limit: 512m
   neo4j:
-    image: neo4j:5.26-community
+    image: neo4j:5.26-community@sha256:f1e52d4dc6da122468c4a3c1050a4f5e117f6d3268625237c34d49166f0d6082
     profiles: ["full"]
     environment:
       NEO4J_AUTH: neo4j/${NEO4J_PASSWORD:?Run setup/init-environment.py first}

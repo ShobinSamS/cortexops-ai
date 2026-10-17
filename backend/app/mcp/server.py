@@ -52,7 +52,6 @@ class Authentication:
 
 
 def create_server(kind):
-    port = SERVER_PORTS[kind] + get_settings().mcp_port_offset
     mcp = FastMCP(f"CortexOps {kind}", stateless_http=True, json_response=True,
                   transport_security=TransportSecuritySettings(enable_dns_rebinding_protection=True,
                       allowed_hosts=["127.0.0.1:*", "localhost:*", f"mcp-{kind}:*", "host.docker.internal:*"],

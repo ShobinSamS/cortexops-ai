@@ -1,0 +1,133 @@
+{
+  "mode": "investigation",
+  "limitations": [
+    "Small synthetic dataset; not a general accuracy estimate.",
+    "Citation-ID validity and expected-term matching do not measure semantic entailment or causal correctness."
+  ],
+  "results": [
+    {
+      "id": "preprocessing-regression",
+      "category": "successful",
+      "workspace_id": "7567d050-4dde-4974-a5f7-14dfe88b4774",
+      "retrieval": {
+        "k": 6,
+        "recall_at_k": 1.0,
+        "precision_at_k": 0.3333333333333333,
+        "irrelevant_abstention": null,
+        "retrieved_documents": [
+          "monitoring-runbook.md",
+          "preprocessing-contract.md",
+          "release-v2.3.md",
+          "traffic-summary.md",
+          "unrelated-maintenance.md",
+          "untrusted-document.md"
+        ],
+        "scores": [
+          6.978760719299316,
+          -10.210929870605469,
+          -11.182538986206055,
+          -11.469808578491211,
+          -11.47377872467041,
+          -11.484838485717773
+        ]
+      },
+      "investigation_id": "6c5d3c44-4d27-449f-8b04-631d5500fcf8",
+      "job_status": "completed",
+      "report_id": "44ed2b16-251e-4397-9727-9aafa6d2dc45",
+      "outcome": "hypothesis_report",
+      "citation_id_validity": 1.0,
+      "expected_term_match": true,
+      "duration_seconds": 123.39
+    },
+    {
+      "id": "unchanged-source-mix",
+      "category": "ambiguous",
+      "workspace_id": "0df152c9-7f32-4eb3-b7dd-3862e0acc161",
+      "retrieval": {
+        "k": 6,
+        "recall_at_k": 1.0,
+        "precision_at_k": 0.3333333333333333,
+        "irrelevant_abstention": null,
+        "retrieved_documents": [
+          "monitoring-runbook.md",
+          "preprocessing-contract.md",
+          "release-v2.3.md",
+          "traffic-summary.md",
+          "unrelated-maintenance.md",
+          "untrusted-document.md"
+        ],
+        "scores": [
+          5.1559648513793945,
+          -1.5075125694274902,
+          -1.5425249338150024,
+          -2.1725521087646484,
+          -9.505395889282227,
+          -11.473662376403809
+        ]
+      },
+      "investigation_id": "f35b8e00-f8c9-44c7-924b-fc326623c74b",
+      "job_status": "completed",
+      "report_id": "6a2b952a-f1eb-4464-8a65-94192026e6bc",
+      "outcome": "hypothesis_report",
+      "citation_id_validity": 1.0,
+      "expected_term_match": null,
+      "duration_seconds": 68.39
+    },
+    {
+      "id": "irrelevant-astronomy",
+      "category": "irrelevant_documents",
+      "workspace_id": "5b25e3d7-daa7-4a1d-9f48-b4133b730b59",
+      "retrieval": {
+        "k": 6,
+        "recall_at_k": null,
+        "precision_at_k": 0.0,
+        "irrelevant_abstention": false,
+        "retrieved_documents": [
+          "monitoring-runbook.md",
+          "preprocessing-contract.md",
+          "release-v2.3.md",
+          "traffic-summary.md",
+          "unrelated-maintenance.md",
+          "untrusted-document.md"
+        ],
+        "scores": [
+          -11.228448867797852,
+          -11.244882583618164,
+          -11.25445556640625,
+          -11.265676498413086,
+          -11.27232551574707,
+          -11.287483215332031
+        ]
+      },
+      "investigation_id": "12f11df6-e689-4270-9da2-883014a921b8",
+      "job_status": "completed",
+      "report_id": "c75f27ea-8290-448b-8603-0150e4941add",
+      "outcome": "hypothesis_report",
+      "citation_id_validity": 1.0,
+      "expected_term_match": null,
+      "duration_seconds": 64.12
+    },
+    {
+      "id": "denied-analytics",
+      "category": "failed_tools",
+      "workspace_id": "17535df2-a361-4988-91f0-96137a989150",
+      "investigation_id": "eaf52144-979c-4b1d-9cb1-2d1f4856850b",
+      "job_status": "failed",
+      "expected_status_match": true,
+      "duration_seconds": 17.72
+    },
+    {
+      "id": "empty-workspace",
+      "category": "insufficient_evidence",
+      "workspace_id": "7e6060f8-f4f0-4ffc-a8f3-fa55ab794eea",
+      "investigation_id": "c81918d4-af3e-4422-8115-47432c29a0d4",
+      "job_status": "completed",
+      "report_id": "c726be78-6da0-411a-9ef4-18d016822821",
+      "outcome": "insufficient_evidence",
+      "citation_id_validity": null,
+      "expected_term_match": null,
+      "expected_outcome_match": true,
+      "duration_seconds": 15.03
+    }
+  ]
+}

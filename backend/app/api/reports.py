@@ -12,17 +12,17 @@ router = APIRouter()
 
 
 @router.get("/reports")
-async def reports(p: Principal = Depends(current_principal), db: AsyncSession = Depends(get_db)):
+async def reports(p: Principal = Depends(current_principal), db: AsyncSession = Depends(get_db, scope="function")):
     return [serialize(x, exclude=("content", "markdown")) for x in await db.scalars(select(Report).where(Report.workspace_id == p.workspace_id).order_by(Report.created_at.desc()).limit(100))]
 
 
 @router.get("/reports/{report_id}")
-async def report(report_id: str, p: Principal = Depends(current_principal), db: AsyncSession = Depends(get_db)):
+async def report(report_id: str, p: Principal = Depends(current_principal), db: AsyncSession = Depends(get_db, scope="function")):
     return serialize(await owned(db, Report, report_id, p))
 
 
 @router.get("/reports/{report_id}/export")
-async def export(report_id: str, format: str = "md", p: Principal = Depends(current_principal), db: AsyncSession = Depends(get_db)):
+async def export(report_id: str, format: str = "md", p: Principal = Depends(current_principal), db: AsyncSession = Depends(get_db, scope="function")):
     item = await owned(db, Report, report_id, p)
     if format == "pdf":
         from app.services.pdf_report import report_pdf

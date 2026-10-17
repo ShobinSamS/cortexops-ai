@@ -38,6 +38,7 @@ class Settings(BaseSettings):
     max_upload_bytes: int = 20 * 1024 * 1024
     chunk_size: int = Field(default=1500, ge=300, le=6000)
     chunk_overlap: int = Field(default=200, ge=0, le=1000)
+    retrieval_min_score: float = Field(default=-6.0, ge=-100, le=100)
     cors_origins: str = "http://localhost:5173,http://127.0.0.1:5173"
     allowed_origins: str = "http://localhost:5173,http://127.0.0.1:5173,http://localhost:8000,http://127.0.0.1:8000,http://localhost:8080,http://127.0.0.1:8080"
     mcp_base_url: str = "http://127.0.0.1"

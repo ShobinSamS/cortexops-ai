@@ -20,12 +20,12 @@ router = APIRouter()
 
 
 @router.get("/documents")
-async def documents(p: Principal = Depends(current_principal), db: AsyncSession = Depends(get_db)):
+async def documents(p: Principal = Depends(current_principal), db: AsyncSession = Depends(get_db, scope="function")):
     return [serialize(d, exclude=("storage_path",)) for d in await db.scalars(select(Document).where(Document.workspace_id == p.workspace_id).order_by(Document.created_at.desc()).limit(200))]
 
 
 @router.post("/documents", status_code=202)
-async def upload(file: UploadFile = File(...), p: Principal = Depends(require_role("analyst")), db: AsyncSession = Depends(get_db)):
+async def upload(file: UploadFile = File(...), p: Principal = Depends(require_role("analyst")), db: AsyncSession = Depends(get_db, scope="function")):
     settings = get_settings()
     filename = Path((file.filename or "document.txt").replace("\\", "/")).name[:255]
     extension = Path(filename).suffix.lower()
@@ -70,18 +70,18 @@ async def upload(file: UploadFile = File(...), p: Principal = Depends(require_ro
 
 
 @router.get("/documents/{document_id}")
-async def document(document_id: str, p: Principal = Depends(current_principal), db: AsyncSession = Depends(get_db)):
+async def document(document_id: str, p: Principal = Depends(current_principal), db: AsyncSession = Depends(get_db, scope="function")):
     return serialize(await owned(db, Document, document_id, p), exclude=("storage_path",))
 
 
 @router.get("/documents/{document_id}/chunks")
-async def chunks(document_id: str, limit: int = 50, offset: int = 0, p: Principal = Depends(current_principal), db: AsyncSession = Depends(get_db)):
+async def chunks(document_id: str, limit: int = 50, offset: int = 0, p: Principal = Depends(current_principal), db: AsyncSession = Depends(get_db, scope="function")):
     await owned(db, Document, document_id, p)
     return [serialize(x) for x in await db.scalars(select(DocumentChunk).where(DocumentChunk.document_id == document_id, DocumentChunk.workspace_id == p.workspace_id).order_by(DocumentChunk.position).offset(max(0, offset)).limit(min(100, max(1, limit))))]
 
 
 @router.post("/documents/{document_id}/reindex", status_code=202)
-async def reindex(document_id: str, p: Principal = Depends(require_role("analyst")), db: AsyncSession = Depends(get_db)):
+async def reindex(document_id: str, p: Principal = Depends(require_role("analyst")), db: AsyncSession = Depends(get_db, scope="function")):
     item = await owned(db, Document, document_id, p, lock=True)
     if item.status in {"processing", "queued", "deleting"}:
         raise HTTPException(409, "Document already has a pending operation")
@@ -92,7 +92,7 @@ async def reindex(document_id: str, p: Principal = Depends(require_role("analyst
 
 
 @router.delete("/documents/{document_id}", status_code=202)
-async def delete_document(document_id: str, p: Principal = Depends(require_role("analyst")), db: AsyncSession = Depends(get_db)):
+async def delete_document(document_id: str, p: Principal = Depends(require_role("analyst")), db: AsyncSession = Depends(get_db, scope="function")):
     item = await owned(db, Document, document_id, p, lock=True)
     item.status = "deleting"
     audit(db, p, "document.delete", "document", item.id)
@@ -101,13 +101,13 @@ async def delete_document(document_id: str, p: Principal = Depends(require_role(
 
 
 @router.post("/knowledge/search", status_code=202)
-async def search(data: SearchRequest, p: Principal = Depends(current_principal), db: AsyncSession = Depends(get_db)):
+async def search(data: SearchRequest, p: Principal = Depends(current_principal), db: AsyncSession = Depends(get_db, scope="function")):
     job = await enqueue(db, p, "search", {"query": data.query, "limit": data.limit, "document_ids": data.document_ids})
     return {"job_id": job.id}
 
 
 @router.get("/jobs/{job_id}")
-async def job(job_id: str, p: Principal = Depends(current_principal), db: AsyncSession = Depends(get_db)):
+async def job(job_id: str, p: Principal = Depends(current_principal), db: AsyncSession = Depends(get_db, scope="function")):
     item = await owned(db, BackgroundJob, job_id, p)
     result = serialize(item, exclude=("payload",))
     if item.kind == "search" and item.status == "completed":

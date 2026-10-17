@@ -9,6 +9,13 @@ from app.core.config import get_settings
 
 @lru_cache
 def configure_telemetry(service):
+    app_logger = logging.getLogger("cortexops")
+    app_logger.setLevel(logging.INFO)
+    app_logger.propagate = False
+    if not app_logger.handlers:
+        handler = logging.StreamHandler()
+        handler.setFormatter(logging.Formatter("%(message)s"))
+        app_logger.addHandler(handler)
     structlog.configure(processors=[structlog.processors.TimeStamper(fmt="iso"), structlog.processors.add_log_level, structlog.processors.JSONRenderer()],
                         logger_factory=structlog.stdlib.LoggerFactory())
     endpoint = get_settings().otel_exporter_otlp_endpoint

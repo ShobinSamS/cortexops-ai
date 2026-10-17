@@ -90,7 +90,7 @@ class Finding(BaseModel):
 class Diagnosis(BaseModel):
     model_config = ConfigDict(extra="forbid")
     summary: str = Field(max_length=2000)
-    findings: list[Finding] = Field(min_length=1, max_length=6)
+    findings: list[Finding] = Field(default_factory=list, max_length=6)
     recommendations: list[str] = Field(min_length=1, max_length=5)
     limitations: list[str] = Field(default_factory=list, max_length=8)
 

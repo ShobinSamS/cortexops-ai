@@ -1,12 +1,10 @@
 from datetime import datetime, timedelta, timezone
 import hashlib
-from pathlib import Path
 import random
 
 from fastapi import HTTPException
 from sqlalchemy import select
 from app.core.config import ROOT, get_settings
-from app.core.database import Session
 from app.models.entities import Workspace, ModelObservation, Deployment, RepositoryChange, ApplicationLog, Incident, Document
 from app.services.common import audit
 from app.services.jobs import enqueue
