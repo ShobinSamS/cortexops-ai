@@ -45,6 +45,9 @@ test verifies selection of the second candidate rather than a hardcoded first.
    image builds were in progress at the pause; determine their final status before
    restarting. Backend package download finished, image export was pending.
    Do not claim the full Compose deployment has run yet.
+   Update verified on 17 October: both backend and frontend image builds completed
+   successfully after the pause. Full Compose startup remains unverified; rebuild
+   before verification to include the latest source changes.
 2. Run one app stack at a time on this 16 GB CPU laptop. Native launcher was stopped
    to free memory for isolated tests/builds. Core database containers remain.
    Optional Neo4j was stopped after its integration tests due memory pressure.

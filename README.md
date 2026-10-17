@@ -341,3 +341,6 @@ Actual browser-test capture:
   worker-inclusive metrics, evaluation cases/runner and GitHub Actions written.
   Full container startup, updated browser suite, real evaluation run and final
   documentation cleanup remain. See `docs/NEXT_SESSION.md` before resuming.
+- **17 October 2026 — checkpoint verification:** the background Docker build
+  completed successfully for backend and frontend images. Full container startup
+  and the remaining Phase 6 checks are still pending.
