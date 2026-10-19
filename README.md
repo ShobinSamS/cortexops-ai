@@ -147,7 +147,7 @@ Advisory locks prevent concurrent duplicate job/investigation execution.
 | --- | --- |
 | Overview | Real workspace counts, version accuracy, incidents, agent/tool activity |
 | Investigations | Create/filter/history, start/pause/resume/cancel, live recorded execution |
-| Knowledge base | Upload, index, filename/status filters, chunk inspector, cited search, reindex/delete |
+| Knowledge base | Upload, index, searchable filename/status filters with one-click reset, chunk inspector, cited search, reindex/delete |
 | Knowledge graph | Interactive provenance graph and optional Neo4j synchronization |
 | MCP connections | Discover contracts, permissions, JSON workbench, persisted execution history |
 | Approvals | Exact arguments/destination/hash, expiry, admin decision and execution outcome |

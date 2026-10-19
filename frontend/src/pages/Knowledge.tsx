@@ -34,7 +34,7 @@ export function Knowledge() {
             <select aria-label="Filter documents by status" value={documentStatus} onChange={e => setDocumentStatus(e.target.value)}>
               <option value="all">All statuses</option><option value="queued">Queued</option><option value="processing">Processing</option><option value="indexed">Indexed</option><option value="failed">Failed</option><option value="deleting">Deleting</option>
             </select>
-            <small>{visibleDocuments.length} of {docs.data.length} documents</small>
+            <div className="document-filter-summary"><small>{visibleDocuments.length} of {docs.data.length} documents</small>{(documentQuery || documentStatus !== 'all') && <button className="filter-reset" type="button" onClick={() => { setDocumentQuery(''); setDocumentStatus('all'); }}>Clear filters</button>}</div>
           </div>
           {visibleDocuments.length ? <div className="document-list">{visibleDocuments.map(d => <article key={d.id} className={selected === d.id ? 'selected' : ''}>
             <button className="document-main" onClick={() => setSelected(selected === d.id ? null : d.id)}><FileText size={21}/><span><strong>{d.filename}</strong><small>{Math.ceil(d.size_bytes / 1024)} KB · {date(d.created_at)}</small>{d.error && <small className="error-text">{d.error}</small>}</span></button>
